@@ -24,15 +24,6 @@ miniMaxSum(arr)
 
 ####################################################################
 
-import re
-import sys
-
-#
-# Complete the 'plusMinus' function below.
-#
-# The function accepts INTEGER_ARRAY arr as parameter.
-#
-
 def plusMinus(arr):
     pos = 0 
     neg = 0 
