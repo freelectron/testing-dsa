@@ -1,0 +1,191 @@
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+class SinglyLinkedListNode:
+    def __init__(self, node_data):
+        self.data = node_data
+        self.next = None
+
+class SinglyLinkedList:
+    def __init__(self):
+        self.head = None
+        self.tail = None
+
+    def insert_node(self, node_data):
+        node = SinglyLinkedListNode(node_data)
+
+        if not self.head:
+            self.head = node
+        else:
+            self.tail.next = node
+
+
+        self.tail = node
+
+def print_singly_linked_list(node, sep, fptr):
+    while node:
+        fptr.write(str(node.data))
+
+        node = node.next
+
+        if node:
+            fptr.write(sep)
+
+
+def mergeLists(head1, head2):
+    n1 = head1 
+    n2 = head2
+    out = SinglyLinkedList()
+    while (n1 is not None) or (n2 is not None):
+        n1_data = n1.data if n1 is not None else None
+        n2_data = n2.data if n2 is not None else None
+        if (n1_data is None) and (n2_data is not None):
+            out.insert_node(n2_data)
+            n2 = n2.next     
+        elif (n2_data is None) and (n1_data is not None):
+            out.insert_node(n1_data)
+            n1 = n1.next                 
+        elif n1_data < n2_data: 
+            out.insert_node(n1_data)
+            n1 = n1.next 
+        else:
+            
+            out.insert_node(n2_data)     
+            n2 = n2.next 
+    
+    return out.head
+    
+    
+
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    tests = int(input())
+
+    for tests_itr in range(tests):
+        llist1_count = int(input())
+
+        llist1 = SinglyLinkedList()
+
+        for _ in range(llist1_count):
+            llist1_item = int(input())
+            llist1.insert_node(llist1_item)
+            
+        llist2_count = int(input())
+
+        llist2 = SinglyLinkedList()
+
+        for _ in range(llist2_count):
+            llist2_item = int(input())
+            llist2.insert_node(llist2_item)
+
+        llist3 = mergeLists(llist1.head, llist2.head)
+
+        print_singly_linked_list(llist3, ' ', fptr)
+        fptr.write('\n')
+
+    fptr.close()
+
+
+
+##############################################################################################################
+
+# Enter your code here. Read input from STDIN. Print output to STDOUT
+from dataclasses import dataclass, field
+
+
+@dataclass
+class Queue:
+    q : list = field(default_factory=list)
+    
+    def enqueue(self, x: int):
+        self.q.insert(0, x)
+    
+    def dequeue(self):
+        return self.q.pop()
+    
+    def head(self):
+        return self.q[-1]
+
+
+if __name__ == "__main__":
+    # q = number of queries 
+    q = int(input())
+    
+    # read queries 
+    queue = Queue() 
+    for i in range(q):
+        query = input()
+        query = query.split(" ")
+        if query[0] == "1":
+            queue.enqueue(int(query[1]))
+        elif query[0] == "2":
+            queue.dequeue()
+        else:
+            print(queue.head())
+
+#################################################################################################
+
+import math
+import os
+import random
+import re
+import sys
+
+from typing import Literal
+
+
+BRACKETS = ["(", "{", "["]
+
+class LIFOQueue:
+    def __init__(self):
+        self.q =list() 
+    
+    def enqueue(self, x: Literal[BRACKETS]):
+        self.q.append(x)
+    
+    def dequeue(self):
+        if self.length() > 0:
+            return self.q.pop()
+        else:
+            return " "
+        
+    def length(self):
+        return len(self.q)
+
+def isBalanced(s):
+    queue = LIFOQueue()
+    
+    for bracket in s: 
+        if bracket in BRACKETS:
+            queue.enqueue(bracket)
+        else:
+            open_bracket = queue.dequeue()
+            if ord(bracket) - ord(open_bracket) > 2:
+                return "NO"
+                     
+    if queue.length()>0:
+        return "NO"
+    else:
+        return "YES"
+         
+ 
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    t = int(input().strip())
+
+    for t_itr in range(t):
+        s = input()
+
+        result = isBalanced(s)
+
+        fptr.write(result + '\n')
+        
+
+    fptr.close()
